@@ -38,7 +38,7 @@ class Property extends Model
 
     public function setSchemaAttribute($value)
     {
-        $this->attributes['schema'] = is_string($value) ? $value : json_encode($value);
+        $this->attributes['schema'] = is_array($value) ? json_encode($value) : $value;
     }
 
     public function scopeType($query, $key)
