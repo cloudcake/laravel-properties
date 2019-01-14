@@ -33,12 +33,12 @@ class Property extends Model
             $value = explode(',', $value);
         }
 
-        $this->attributes['targets'] = json_encode($value);
+        $this->attributes['targets'] = $value ? json_encode($value) : null;
     }
 
     public function scopeType($query, $key)
     {
-        return $query->find($key);
+        return $query->where('key', $key);
     }
 
     public function scopeTargetting($query, $targets = [])
