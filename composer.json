@@ -1,0 +1,35 @@
+{
+  "name": "stephenlake/laravel-properties",
+  "description": "Associate plain text configurations/properties to any other model.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [{
+    "name": "Stephen Lake",
+    "email": "stephen@closurecode.com"
+  }],
+  "require": {
+    "adbario/php-dot-notation": "^2.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~7.0",
+    "laravel/framework": "~5.5.0|~5.6.0|~5.7.0",
+    "orchestra/testbench": "~3.4.0|~3.5.0|~3.6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Properties\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Properties\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Properties\\PropertiesServiceProvider"
+      ]
+    }
+  }
+}
