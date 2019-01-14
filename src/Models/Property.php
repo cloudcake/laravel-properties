@@ -27,20 +27,6 @@ class Property extends Model
         $this->attributes['key'] = strtoupper($value);
     }
 
-    public function setTargetsAttribute($value)
-    {
-        if (is_string($value)) {
-            $value = explode(',', $value);
-        }
-
-        $this->attributes['targets'] = $value ? json_encode($value) : null;
-    }
-
-    public function setSchemaAttribute($value)
-    {
-        $this->attributes['schema'] = is_array($value) ? json_encode($value) : $value;
-    }
-
     public function scopeType($query, $key)
     {
         return $query->where('key', $key);
