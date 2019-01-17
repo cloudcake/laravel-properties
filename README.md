@@ -1,4 +1,4 @@
-#### :exclamation: This package is still being actively developed.
+#### :exclamation: This package is still being actively developed. Documentation coming soon. :exclamation:
 
 <!-- <h6 align="center">
     <img src="https://github.com/stephenlake/laravel-shovel/blob/master/docs/assets/laravel-properties.png" width="450"/>
