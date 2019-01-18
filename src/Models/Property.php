@@ -3,55 +3,117 @@
 namespace Properties\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Property extends Model
 {
-    use SoftDeletes;
-
+    /**
+    * The primary key column name.
+    *
+    * @var array
+    */
     public $primaryKey = 'key';
+
+    /**
+    * Whether the primary key is incremental.
+    *
+    * @var boolean
+    */
     public $increments = false;
 
+    /**
+    * The attributes that should be cast to native types.
+    *
+    * @var array
+    */
     protected $casts = [
-      'key'     => 'string',
-      'targets' => 'json',
-      'schema'  => 'json',
+        'key'            => 'string',
+        'type'           => 'string',
+        'targets'        => 'json',
     ];
 
+    /**
+    * The attributes that aren't mass assignable.
+    *
+    * @var array
+    */
+    protected $fillable = [
+        'key',
+        'type',
+        'targets',
+        'default',
+    ];
+
+    /**
+    * The attributes that appended to the model.
+    *
+    * @var array
+    */
     protected $appends = [
-      'values'
+        'values'
     ];
 
+    /**
+    * Returns the value of the property. Returns the default value
+    * if no value has been defined.
+    *
+    * @return array
+    */
+    public function getValueAttribute()
+    {
+        return $this->pivot->value ?? $this->default;
+    }
+
+    /**
+    * Mutate the key to always be uppercase.
+    *
+    * @param  string  $value
+    * @return array
+    */
     public function setKeyAttribute($value)
     {
         $this->attributes['key'] = strtoupper($value);
     }
-    
-    public function setTargetsAttribute($value)
+
+    /**
+    * Mutate the type to always be uppercase.
+    *
+    * @param  string  $value
+    * @return array
+    */
+    public function setTypeAttribute($value)
     {
-        if (is_string($value)) {
-            $value = explode(',', $value);
+        $this->attributes['type'] = strtoupper($value);
+    }
+
+    /**
+    * Mutate the default value according to its type.
+    *
+    * @param  string  $value
+    * @return array
+    */
+    public function getDefaultAttribute($value)
+    {
+        switch ($this->attributes['type']) {
+          case 'JSON':
+              $value = json_decode($value);
+              break;
+
+          default:
+              break;
         }
 
-        $this->attributes['targets'] = $value ? json_encode($value) : null;
+        return $value;
     }
 
-    public function setSchemaAttribute($value)
-    {
-        $this->attributes['schema'] = is_array($value) ? json_encode($value) : $value;
-    }
-
-    public function scopeType($query, $key)
-    {
-        return $query->where('key', $key);
-    }
-
+    /**
+    * Scope to only return properties that target an array of items.
+    *
+    * @param \Illuminate\Database\Eloquent\Builder $query
+    * @param array|string $targets
+    * @return \Illuminate\Database\Eloquent\Builder
+    */
     public function scopeTargetting($query, $targets = [])
     {
-        if (is_string($targets)) {
-            $targets = explode(',', $targets);
-        }
-
         return $query->whereJsonContains('targets', $targets);
     }
 }

@@ -7,10 +7,15 @@ use Properties\Models\Propertyable;
 
 trait HasProperties
 {
+
+    /**
+    * Return properties on the inheriting model.
+    *
+    * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+    */
     public function properties()
     {
         return $this->morphToMany(Property::class, 'propertyable')
-                    ->using(Propertyable::class)
-                    ->withPivot('values');
+                    ->withPivot('value');
     }
 }
