@@ -98,6 +98,16 @@ class Property extends Model
               $value = json_decode($value);
               break;
 
+          case 'INT':
+          case 'INTEGER':
+              $value = intval($value);
+              break;
+
+          case 'BOOL':
+          case 'BOOLEAN':
+              $value = boolval($value);
+              break;
+
           default:
               break;
         }
