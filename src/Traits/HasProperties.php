@@ -24,7 +24,7 @@ trait HasProperties
     *
     * @return \Properties\Models\Property
     */
-    public function assignProperty($propertyKey, $value)
+    public function attachProperty($propertyKey, $value)
     {
         $this->properties()->attach($propertyKey, ['value' => $value]);
 
