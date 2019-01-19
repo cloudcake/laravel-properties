@@ -75,6 +75,17 @@ class Property extends Model
     }
 
     /**
+    * Mutate the targets value to JSON.
+    *
+    * @param  string  $value
+    * @return array
+    */
+    public function setTargetsAttribute($value)
+    {
+        $this->attributes['targets'] = json_encode($value);
+    }
+
+    /**
     * Mutate the value relative to the type..
     *
     * @param  string  $value
