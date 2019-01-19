@@ -173,4 +173,34 @@ class Property extends Model
     {
         return $query->whereJsonContains('targets', $targets);
     }
+
+    /**
+    * Create a property using the custom 'schema' type.
+    *
+    * @param string $query
+    * @param array $targets
+    * @param array $schema
+    * @return mixed
+    */
+    public static function schema(string $key, array $targets, array $schema)
+    {
+        collect($schema)->each(function ($v, $k) use ($key) {
+            if (!isset($v->key)) {
+                throw new \Exception("One or more items in '{$key}' do not contain the required 'key' field");
+            } elseif (!isset($v->default)) {
+                throw new \Exception("One or more items in '{$key}' do not contain the required 'default' field");
+            } elseif (!isset($v->type)) {
+                throw new \Exception("One or more items in '{$key}' do not contain the required 'type' field");
+            } elseif (!isset($v->label)) {
+                throw new \Exception("One or more items in '{$key}' do not contain the required 'label' field");
+            }
+        });
+
+        $this->create([
+          'key' => $key,
+          'targets' => $targets,
+          'type' => 'SCHEMA',
+          'default' => $schema
+        ]);
+    }
 }
