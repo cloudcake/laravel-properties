@@ -21,8 +21,33 @@ trait HasProperties
     *
     * @return \Properties\Models\Property
     */
-    public function attachProperty($propertyKey, $value)
+    public function attachProperty($propertyKey, $value = null)
     {
+        $model = config('properties.model', \Properties\Models\Property::class);
+        $property = $model::find($propertyKey);
+
+        if (!$property) {
+            throw new \Exception("Property '{$propertyKey}' not found");
+        }
+
+        if ($value && ($property->type == 'JSON' || $property->type == 'SCHEMA')) {
+            if (!is_array($value)) {
+                throw new \Exception("Property '{$propertyKey}' requires its value to be an array");
+            }
+
+            if ($property->type == 'SCHEMA') {
+                $requiredParams = collect($property->default)->keyBy('key')->keys();
+
+                foreach ($requiredParams as $key) {
+                    if (!isset($value[$key])) {
+                        throw new \Exception("Missing '{$key}' in {$propertyKey} association");
+                    }
+                }
+            }
+
+            $value = json_encode($value);
+        }
+
         $this->properties()->attach($propertyKey, ['value' => $value]);
 
         return $this;

@@ -196,7 +196,8 @@ class Property extends Model
             }
         });
 
-        $this->create([
+        $model = config('properties.model', \Properties\Models\Property::class);
+        $model::create([
           'key' => $key,
           'targets' => $targets,
           'type' => 'SCHEMA',
