@@ -49,7 +49,7 @@ class Property extends Model
     * @var array
     */
     protected $appends = [
-        'values'
+        'value'
     ];
 
     /**
