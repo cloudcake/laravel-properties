@@ -75,6 +75,34 @@ class Property extends Model
     }
 
     /**
+    * Mutate the value relative to the type..
+    *
+    * @param  string  $value
+    * @return array
+    */
+    public function setValueAttribute($value)
+    {
+        switch ($this->attributes['type']) {
+          case 'JSON':
+              $this->attributes['value'] = json_encode($value);
+              break;
+
+          case 'INT':
+          case 'INTEGER':
+              $this->attributes['value'] = intval($value);
+              break;
+
+          case 'BOOL':
+          case 'BOOLEAN':
+              $this->attributes['value'] = boolval($value);
+              break;
+
+          default:
+              break;
+        }
+    }
+
+    /**
     * Mutate the type to always be uppercase.
     *
     * @param  string  $value
