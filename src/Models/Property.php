@@ -109,6 +109,7 @@ class Property extends Model
               break;
 
           default:
+              $this->attributes['default'] = $value;
               break;
         }
     }
