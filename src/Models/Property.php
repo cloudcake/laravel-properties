@@ -26,9 +26,9 @@ class Property extends Model
     * @var array
     */
     protected $casts = [
-        'key'            => 'string',
-        'type'           => 'string',
-        'targets'        => 'json',
+        'key'     => 'string',
+        'type'    => 'string',
+        'targets' => 'json',
     ];
 
     /**
