@@ -60,7 +60,7 @@ class Property extends Model
     */
     public function getValueAttribute()
     {
-        return $this->pivot->value ?? $this->default;
+        return $this->getDefaultAttribute($this->pivot->value ?? $this->default);
     }
 
     /**
@@ -91,21 +91,21 @@ class Property extends Model
     * @param  string  $value
     * @return array
     */
-    public function setValueAttribute($value)
+    public function setDefaultAttribute($value)
     {
         switch ($this->attributes['type']) {
           case 'JSON':
-              $this->attributes['value'] = json_encode($value);
+              $this->attributes['default'] = json_encode($value);
               break;
 
           case 'INT':
           case 'INTEGER':
-              $this->attributes['value'] = intval($value);
+              $this->attributes['default'] = intval($value);
               break;
 
           case 'BOOL':
           case 'BOOLEAN':
-              $this->attributes['value'] = boolval($value);
+              $this->attributes['default'] = boolval($value);
               break;
 
           default:
