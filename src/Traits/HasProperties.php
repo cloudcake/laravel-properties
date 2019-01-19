@@ -2,9 +2,6 @@
 
 namespace Properties\Traits;
 
-use Properties\Models\Property;
-use Properties\Models\Propertyable;
-
 trait HasProperties
 {
 
@@ -15,7 +12,7 @@ trait HasProperties
     */
     public function properties()
     {
-        return $this->morphToMany(Property::class, 'propertyable')
+        return $this->morphToMany(config('properties.model', \Properties\Models\Property::class), 'propertyable')
                     ->withPivot('value');
     }
 
