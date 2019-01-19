@@ -60,17 +60,17 @@ class Property extends Model
     */
     public function getValueAttribute()
     {
+        $value = $this->pivot->value ?? $this->default;
+
         if ($this->attributes['type'] == 'SCHEMA') {
-            $value = $this->pivot->value ?? false;
-                  
-            if (!$value) {
+            if (!($this->pivot->value ?? false)) {
                 return collect($this->default)->keyBy('key')->transform(function ($value) {
                     return $value->default;
                 })->all();
             }
-        } else {
-            return $this->pivot->value ?? $this->default;
         }
+
+        return $this->getDefaultAttribute($value);
     }
 
     /**
@@ -96,7 +96,7 @@ class Property extends Model
           case 'JSON':
               $this->attributes['default'] = json_encode($value);
               break;
-              
+
           case 'SCHEMA':
               $this->attributes['default'] = json_encode($value);
               break;
@@ -140,7 +140,7 @@ class Property extends Model
           case 'JSON':
               $value = !is_array($value) ? json_decode($value) : $value;
               break;
-              
+
           case 'SCHEMA':
               $value = !is_array($value) ? json_decode($value) : $value;
               break;
