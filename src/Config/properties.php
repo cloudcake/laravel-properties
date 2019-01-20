@@ -11,5 +11,7 @@ return [
     | you'll need to specify your model here.
     |
     */
+
     'model' => \Properties\Models\Property::class,
+    
 ];
