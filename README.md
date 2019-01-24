@@ -20,7 +20,7 @@
 
 # Laravel Properties
 
-**Laravel Properties** is a package to assist in associating properties or attributes of generic form to any of your models using polymorphic relationships.
+**Laravel Properties** is a package to assist in associating properties or attributes of generic form to any of your models using polymorphic relationships. Ever wanted to attach an attribute to your model but not pollute your model with an additional column? Laravel Properties solves this desire by acting as a generic attribute you can use in any form.
 
 Made with ❤️ by [Stephen Lake](http://stephenlake.github.io/)
 
