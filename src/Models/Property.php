@@ -7,24 +7,24 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     /**
-    * The primary key column name.
-    *
-    * @var array
-    */
+     * The primary key column name.
+     *
+     * @var array
+     */
     public $primaryKey = 'key';
 
     /**
-    * Whether the primary key is incremental.
-    *
-    * @var boolean
-    */
+     * Whether the primary key is incremental.
+     *
+     * @var bool
+     */
     public $increments = false;
 
     /**
-    * The attributes that should be cast to native types.
-    *
-    * @var array
-    */
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
     protected $casts = [
         'key'     => 'string',
         'type'    => 'string',
@@ -32,10 +32,10 @@ class Property extends Model
     ];
 
     /**
-    * The attributes that aren't mass assignable.
-    *
-    * @var array
-    */
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'key',
         'type',
@@ -44,20 +44,20 @@ class Property extends Model
     ];
 
     /**
-    * The attributes that appended to the model.
-    *
-    * @var array
-    */
+     * The attributes that appended to the model.
+     *
+     * @var array
+     */
     protected $appends = [
-        'value'
+        'value',
     ];
 
     /**
-    * Returns the value of the property. Returns the default value
-    * if no value has been defined.
-    *
-    * @return array
-    */
+     * Returns the value of the property. Returns the default value
+     * if no value has been defined.
+     *
+     * @return array
+     */
     public function getValueAttribute()
     {
         $value = $this->pivot->value ?? $this->default;
@@ -74,22 +74,24 @@ class Property extends Model
     }
 
     /**
-    * Mutate the key to always be uppercase.
-    *
-    * @param  string  $value
-    * @return array
-    */
+     * Mutate the key to always be uppercase.
+     *
+     * @param string $value
+     *
+     * @return array
+     */
     public function setKeyAttribute($value)
     {
         $this->attributes['key'] = strtoupper($value);
     }
 
     /**
-    * Mutate the value relative to the type..
-    *
-    * @param  string  $value
-    * @return array
-    */
+     * Mutate the value relative to the type..
+     *
+     * @param string $value
+     *
+     * @return array
+     */
     public function setDefaultAttribute($value)
     {
         switch ($this->attributes['type']) {
@@ -118,22 +120,24 @@ class Property extends Model
     }
 
     /**
-    * Mutate the type to always be uppercase.
-    *
-    * @param  string  $value
-    * @return array
-    */
+     * Mutate the type to always be uppercase.
+     *
+     * @param string $value
+     *
+     * @return array
+     */
     public function setTypeAttribute($value)
     {
         $this->attributes['type'] = strtoupper($value);
     }
 
     /**
-    * Mutate the default value according to its type.
-    *
-    * @param  string  $value
-    * @return array
-    */
+     * Mutate the default value according to its type.
+     *
+     * @param string $value
+     *
+     * @return array
+     */
     public function getDefaultAttribute($value)
     {
         switch ($this->attributes['type']) {
@@ -163,25 +167,27 @@ class Property extends Model
     }
 
     /**
-    * Scope to only return properties that target an array of items.
-    *
-    * @param \Illuminate\Database\Eloquent\Builder $query
-    * @param array|string $targets
-    * @return \Illuminate\Database\Eloquent\Builder
-    */
+     * Scope to only return properties that target an array of items.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array|string                          $targets
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeTargetting($query, $targets = [])
     {
         return $query->whereJsonContains('targets', $targets);
     }
 
     /**
-    * Create a property using the custom 'schema' type.
-    *
-    * @param string $query
-    * @param array $targets
-    * @param array $schema
-    * @return mixed
-    */
+     * Create a property using the custom 'schema' type.
+     *
+     * @param string $query
+     * @param array  $targets
+     * @param array  $schema
+     *
+     * @return mixed
+     */
     public static function schema(string $key, array $targets, array $schema)
     {
         collect($schema)->each(function ($v, $k) use ($key) {
@@ -198,10 +204,10 @@ class Property extends Model
 
         $model = config('properties.model', \Properties\Models\Property::class);
         $model::create([
-          'key' => $key,
+          'key'     => $key,
           'targets' => $targets,
-          'type' => 'SCHEMA',
-          'default' => $schema
+          'type'    => 'SCHEMA',
+          'default' => $schema,
         ]);
     }
 }
