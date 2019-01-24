@@ -2,7 +2,6 @@
 
 namespace Properties\Tests;
 
-use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
