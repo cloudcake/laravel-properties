@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class PropertiesServiceProvider extends ServiceProvider
 {
     /**
-     * Boot up Shovel.
+     * Boot up Properties.
      *
      * @return void
      */
