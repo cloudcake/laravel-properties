@@ -24,12 +24,11 @@ Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `c
 
 `php artisan vendor:publish --provider="Properties\PropertiesServiceProvider" --tag="config"`
 
-That's it. See the usage section for examples.
-
 # Setting Up
 The only requirement to start attaching properties to models is to add the `\Properties\HasProperties`  trait:
 
 ```php
+use Illuminate\Database\Eloquent\Model;
 use Properties\HasProperties;
 
 class Person extends Model
@@ -37,6 +36,21 @@ class Person extends Model
     use HasProperties;
 }
 ```
+That's it. See the usage section for examples.
 
 # Usage
+
+## Creating a Property
+To be updated.
+
+### Property Types
+To be updated.
+
+### Property Targets
+To be updated.
+
+## Creating a Property
+To be updated.
+
+## Creating a Property
 To be updated.
