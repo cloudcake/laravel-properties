@@ -96,7 +96,7 @@ $person->attachProperty('MAX_DOWNLOADS_ALLOWED', 700);
 $person->attachProperty('MAX_DOWNLOADS_ALLOWED');
 ```
 
-## Dettaching a Property from Models
+## Detaching a Property from Models
 Detaching properties is done in the same way regular Laravel detaching is done:
 
 ```php
@@ -107,4 +107,6 @@ $person->properties()->detach('MAX_DOWNLOADS_ALLOWED');
 ```
 
 ## Schema Property
-To be updated.
+The `SCHEMA` type is a custom pre-configured data type that was created with the need to store application preferences in mind. An example might be a case where you need to store a users theme settings for your web application and you don't want to store several smaller properties for it.
+
+This type was configured in such a way that the blueprint could be used to construct a responsive frontend based on the type of values required.
