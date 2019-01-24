@@ -106,7 +106,40 @@ $person = Person::first();
 $person->properties()->detach('MAX_DOWNLOADS_ALLOWED');
 ```
 
-## Schema Property
-The `SCHEMA` type is a custom pre-configured data type that was created with the need to store application preferences in mind. An example might be a case where you need to store a users theme settings for your web application and you don't want to store several smaller properties for it.
+## Retrieving Properties attached to a model
+Since the properties associating are a regular Laravel polymorphic relationship, you can call your eloquent queries as you usually would to retrieve properties:
 
-This type was configured in such a way that the blueprint could be used to construct a responsive frontend based on the type of values required.
+```php
+$john = Person::find(1337);
+$john->attachProperty('API_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
+$john->attachProperty('MAX_DOWNLOADS_ALLOWED', 123);
+
+$api = $john->properties()->find('API_CONFIG');
+
+print_r($api->value); // ['username' => 'foobar', 'password' => 'p455w0rd']
+print_r($api->default); // ['username' => null, 'password' => null]
+
+$max_downloads = $john->properties()->find('MAX_DOWNLOADS_ALLOWED');
+
+echo $max_downloads->value; // 123
+echo $max_downloads->default; // 200
+
+```
+
+## Retrieving Properties by Target
+If making use of the `targets` field, you may retrieve only properties that fit the `targets` criteria by appending the `targetting` scope to your queries:
+
+```php
+// Get properties targetting 'PERSON'
+Property::targeting('PERSON')->get();
+
+// Get properties targetting 'PERSON' or 'ANIMALS' or 'COMPUTERS'
+Property::targetting(['PERSON','ANIMALS','COMPUTERS'])->get();
+
+// Get properties on person model targeting 'PERSON'
+Person::find(1337)->properties()->targetting('PERSON')->get();
+
+```
+
+## Schema Property
+The `SCHEMA` type is a custom pre-configured data type that was created with the need to store application preferences in mind. An example might be a case where you need to store a users theme settings for your web application and you don't want to store several smaller properties for it. This type was configured in such a way that the blueprint could be used to construct a responsive frontend based on the type of values required.
