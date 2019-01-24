@@ -76,16 +76,35 @@ Property::create([
 ### Property Types
 By default, if a property `type` column is set to `null`, any values will be returned as a string, however some default types have been supplied out of the box:
 
-- INT/INTEGER: Will cast the value to an `integer`.
-- BOOL/BOOLEAN: Will cast the value to a `bool`.
-- JSON: Will cast a valid JSON value to `JSON`.
-- SCHEMA: Will cast the value to a special type of JSON format, see the Schema Property section.
-
-#### Schema Property
-To be updated.
-
-### Property Targets
-To be updated.
+- `INT` or `INTEGER`: Will cast the value to an `integer`.
+- `BOOL` or `BOOLEAN`: Will cast the value to a `bool`.
+- `JSON`: Will cast a valid JSON value to `JSON`.
+- `SCHEMA`: Will cast the value to a special type of `JSON` format, see the Schema Property section.
 
 ## Attaching a Property to Models
+Once you've created your properties with default values, associating them to any model that contains the `HasProperties` attribute is as simple as calling:
+
+```php
+use App\Models\Person;
+
+$person = Person::first();
+
+// Attach the MAX_DOWNLOADS_ALLOWED property with a custom value of 700.
+$person->attachProperty('MAX_DOWNLOADS_ALLOWED', 700);
+
+// Attach the MAX_DOWNLOADS_ALLOWED property with the default Property value.
+$person->attachProperty('MAX_DOWNLOADS_ALLOWED');
+```
+
+## Dettaching a Property from Models
+Detaching properties is done in the same way regular Laravel detaching is done:
+
+```php
+use App\Models\Person;
+
+$person = Person::first();
+$person->properties()->detach('MAX_DOWNLOADS_ALLOWED');
+```
+
+## Schema Property
 To be updated.
