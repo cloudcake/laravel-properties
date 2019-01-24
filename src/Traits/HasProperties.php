@@ -35,11 +35,13 @@ trait HasProperties
             }
 
             if ($property->type == 'SCHEMA') {
-                $requiredParams = collect($property->default)->keyBy('key')->keys();
+                $originalProps = collect($property->default)->keyBy('key');
+                $requiredParams = $originalProps->keys();
+                $defaultValues = $originalProps->all();
 
                 foreach ($requiredParams as $key) {
                     if (!isset($value[$key])) {
-                        throw new \Exception("Missing '{$key}' in {$propertyKey} association");
+                        $value[$key] = $defaultValues[$key]['default'];
                     }
                 }
             }
