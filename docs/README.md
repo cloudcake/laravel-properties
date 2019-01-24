@@ -49,8 +49,5 @@ To be updated.
 ### Property Targets
 To be updated.
 
-## Creating a Property
-To be updated.
-
 ## Attaching a Property to Models
 To be updated.
