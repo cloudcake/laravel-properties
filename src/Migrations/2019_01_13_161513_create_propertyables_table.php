@@ -17,8 +17,7 @@ class CreatePropertyablesTable extends Migration
             $table->string('property_key', 32);
             $table->integer('propertyable_id');
             $table->string('propertyable_type');
-            $table->longText('value')->nullable();
-            $table->softDeletes();
+            $table->json('value')->nullable();
             $table->timestamps();
         });
     }
