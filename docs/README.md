@@ -20,6 +20,10 @@ This package makes use of Laravel's auto-discovery. If you are an using earlier 
 
 Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `config/app.php`.
 
+## Publish configuration
+
+`php artisan vendor:publish --provider="Properties\PropertiesServiceProvider" --tag="config"`
+
 That's it. See the usage section for examples.
 
 # Usage
