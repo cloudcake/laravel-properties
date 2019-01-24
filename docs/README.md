@@ -52,5 +52,5 @@ To be updated.
 ## Creating a Property
 To be updated.
 
-## Creating a Property
+## Attaching a Property to Models
 To be updated.
