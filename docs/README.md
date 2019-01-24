@@ -190,4 +190,56 @@ See a real world example of one of my own personal projects below:
 ```
 
 ### Creating a Schema Property
-To be updated.
+For this property type only, there's a method to create the property, this is to ensure the input contains all the necessary required fields in order to function correctly. Let's use the above example to create a schema:
+
+```php
+// Arguments: KEY, TARGETS, DEFAULT
+Property::schema('THEME', ['USER'], [
+   [
+        [key] => NAVBAR_TEXT_COLOUR
+        [type] => COLOUR
+        [label] => Navigation Text Colour
+        [default] => #777777
+   ],
+   [
+        [key] => NAVBAR_BACKGROUND_COLOUR
+        [type] => COLOUR
+        [label] => Navigation Background Colour
+        [default] => #FFFFFF
+   ],
+   [
+        [key] => SIDEBAR_TEXT_COLOUR
+        [type] => COLOUR
+        [label] => Sidebar Text Colour
+        [default] => #FFFFFF
+   ],
+   [
+        [key] => SIDEBAR_BACKGROUND_COLOUR
+        [type] => COLOUR
+        [label] => Sidebar Background Colour
+        [default] => #18273E
+   ]
+]); 
+```
+
+### Assigning a Schema Property to a model
+Assigning a schema property is slightly different to that of a regular property because for each object inside the default value we need to set a key with a value and for any missing keys we'll set the default value.
+
+```php
+Person::find(1337)->attachProperty('THEME', [
+   'NAVBAR_TEXT_COLOUR' => '#FFFFFF',
+   'SIDEBAR_BACKGROUND_COLOUR' => '#000000'
+]);
+
+$theme = Person::find(1337)->properties()->find('THEME');
+
+print_r($theme->values);
+
+// Results in:
+[
+     "NAVBAR_TEXT_COLOUR" => "#FFFFFF",
+     "NAVBAR_BACKGROUND_COLOUR" => "#FFFFFF", // default
+     "SIDEBAR_TEXT_COLOUR" => "#FFFFFF",      // default
+     "SIDEBAR_BACKGROUND_COLOUR" => "#000000",
+]
+```php
