@@ -143,3 +143,51 @@ Person::find(1337)->properties()->targetting('PERSON')->get();
 
 ## Schema Property
 The `SCHEMA` type is a custom pre-configured data type that was created with the need to store application preferences in mind. An example might be a case where you need to store a users theme settings for your web application and you don't want to store several smaller properties for it. This type was configured in such a way that the blueprint could be used to construct a responsive frontend based on the type of values required.
+
+Think of this type as a property containing many sub-properties inside a JSON string. Each object inside the JSON string requires 4 fields:
+
+- `key`: The key for the specific object
+- `default`: The default value for the specific object
+- `type`: Your own custom type to assist the frontend in identifying what type of input to display
+- `label`: A human readable label to describe the object
+
+See a real world example of one of my own personal projects below:
+
+```php
+[{
+  "key": "THEME",
+  "group": "PREFERENCES",
+  "type": "SCHEMA",
+  "targets": [
+    "USER"
+  ],
+  "default": [{
+      "key": "NAVBAR_TEXT_COLOUR",
+      "type": "COLOUR",
+      "label": "Navigation Text Colour",
+      "default": "#777777"
+    },
+    {
+      "key": "NAVBAR_BACKGROUND_COLOUR",
+      "type": "COLOUR",
+      "label": "Navigation Background Colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "key": "SIDEBAR_TEXT_COLOUR",
+      "type": "COLOUR",
+      "label": "Sidebar Text Colour",
+      "default": "#FFFFFF"
+    },
+    {
+      "key": "SIDEBAR_BACKGROUND_COLOUR",
+      "type": "COLOUR",
+      "label": "Sidebar Background Colour",
+      "default": "#18273E"
+    }
+  ]
+}]
+```
+
+### Creating a Schema Property
+To be updated.
