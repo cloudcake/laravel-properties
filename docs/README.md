@@ -26,5 +26,17 @@ Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `c
 
 That's it. See the usage section for examples.
 
+# Setting Up
+The only requirement to start attaching properties to models is to add the `\Properties\HasProperties`  trait:
+
+```php
+use Properties\HasProperties;
+
+class Person extends Model
+{
+    use HasProperties;
+}
+```
+
 # Usage
 To be updated.
