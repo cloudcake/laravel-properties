@@ -242,4 +242,4 @@ print_r($theme->values);
      "SIDEBAR_TEXT_COLOUR" => "#FFFFFF",      // default
      "SIDEBAR_BACKGROUND_COLOUR" => "#000000",
 ]
-```php
+```
