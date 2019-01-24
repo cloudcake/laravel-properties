@@ -44,6 +44,9 @@ That's it. See the usage section for examples.
 To be updated.
 
 ### Property Types
+By default, if a property `type` column is not defined, any values will be returned as a string.
+
+#### Schema Property
 To be updated.
 
 ### Property Targets
