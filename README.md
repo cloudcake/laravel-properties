@@ -9,11 +9,12 @@
 <p align="center">
 <a href="https://travis-ci.org/stephenlake/laravel-properties"><img src="https://img.shields.io/travis/stephenlake/laravel-properties/master.svg?style=flat-square" alt=""></a>
 <a href="https://github.styleci.io/repos/165647638"><img src="https://github.styleci.io/repos/165647638/shield?branch=master&style=flat-square" alt=""></a>
-<a href="https://github.com/stephenlake/laravel-properties"><img src="https://img.shields.io/github/release/stephenlake/laravel-properties.svg?style=flat-square" alt=""></a>
-<a href="https://github.com/stephenlake/laravel-properties/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt=""></a>
+<a href="https://scrutinizer-ci.com/g/stephenlake/laravel-properties"><img src="https://img.shields.io/scrutinizer/g/stephenlake/laravel-properties.svg?style=flat-square" alt=""></a>
 <a href="https://packagist.org/packages/stephenlake/laravel-shovel">
 <img src="https://img.shields.io/packagist/dt/stephenlake/laravel-properties.svg?style=flat-square" alt="">
 </a>
+<a href="https://github.com/stephenlake/laravel-properties"><img src="https://img.shields.io/github/release/stephenlake/laravel-properties.svg?style=flat-square" alt=""></a>
+<a href="https://github.com/stephenlake/laravel-properties/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt=""></a>
 </p>
 
 <br><br>
