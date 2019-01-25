@@ -2,7 +2,9 @@
 
 namespace Properties\Tests;
 
+use Illuminate\Support\Facades\Schema;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Properties\Tests\Models\Person;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -11,6 +13,16 @@ abstract class TestCase extends BaseTestCase
         parent::setup();
 
         $this->app->setBasePath(__DIR__.'/../');
+
+        $this->artisan('migrate');
+
+        Schema::create('people', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Person::create(['name' => 'John Doe']);
     }
 
     protected function getPackageProviders($app)
