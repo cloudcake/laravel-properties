@@ -8,7 +8,7 @@ use Properties\Traits\HasProperties;
 class Person extends Model
 {
     use HasProperties;
-    
+
     protected $fillable = [
       'name',
     ];

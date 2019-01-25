@@ -2,34 +2,34 @@
 
 namespace Properties\Tests\Unit;
 
-use Properties\Tests\TestCase;
 use Properties\Models\Property;
 use Properties\Tests\Models\Person;
+use Properties\Tests\TestCase;
 
 class PropertiesTest extends TestCase
 {
     public function testPropertyCanBeCreated()
     {
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'EYE_COLOUR',
-          'type' => 'STRING',
+          'key'     => 'EYE_COLOUR',
+          'type'    => 'STRING',
           'targets' => [],
-          'default' => 'Unknown'
+          'default' => 'Unknown',
         ])));
     }
 
     public function testPropertiesAreAssignable()
     {
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'EYE_COLOUR',
-          'type' => 'STRING',
+          'key'     => 'EYE_COLOUR',
+          'type'    => 'STRING',
           'targets' => [],
-          'default' => 'Unknown'
+          'default' => 'Unknown',
         ])));
 
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'LIMB_COUNT',
-          'type' => 'INT',
+          'key'     => 'LIMB_COUNT',
+          'type'    => 'INT',
           'targets' => [],
           'default' => 2,
         ])));
@@ -45,15 +45,15 @@ class PropertiesTest extends TestCase
     public function testPropertyDefaultsAreSetWhenNotProvided()
     {
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'EYE_COLOUR',
-          'type' => 'STRING',
+          'key'     => 'EYE_COLOUR',
+          'type'    => 'STRING',
           'targets' => [],
-          'default' => 'Unknown'
+          'default' => 'Unknown',
         ])));
 
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'LIMB_COUNT',
-          'type' => 'INT',
+          'key'     => 'LIMB_COUNT',
+          'type'    => 'INT',
           'targets' => [],
           'default' => 2222,
         ])));
@@ -69,29 +69,29 @@ class PropertiesTest extends TestCase
     public function testValuesAreCorrectlyCast()
     {
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'EYE_COLOUR',
-          'type' => 'STRING',
+          'key'     => 'EYE_COLOUR',
+          'type'    => 'STRING',
           'targets' => [],
-          'default' => 'Unknown'
+          'default' => 'Unknown',
         ])));
 
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'LIMB_COUNT',
-          'type' => 'INT',
+          'key'     => 'LIMB_COUNT',
+          'type'    => 'INT',
           'targets' => [],
           'default' => '2222',
         ])));
 
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'CONFIG',
-          'type' => 'JSON',
+          'key'     => 'CONFIG',
+          'type'    => 'JSON',
           'targets' => [],
           'default' => ['test' => 'something'],
         ])));
 
         $this->assertTrue(!is_null(Property::create([
-          'key' => 'IS_TALL_PERSON',
-          'type' => 'BOOL',
+          'key'     => 'IS_TALL_PERSON',
+          'type'    => 'BOOL',
           'targets' => [],
           'default' => true,
         ])));
