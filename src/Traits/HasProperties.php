@@ -29,8 +29,8 @@ trait HasProperties
             throw new \Exception("Property '{$propertyKey}' not found");
         }
 
-        if ($value && ($property->type == 'JSON' || $property->type == 'SCHEMA')) {
-            if (!is_array($value)) {
+        if ($property->type == 'JSON' || $property->type == 'SCHEMA') {
+            if (!is_null($value) && !is_array($value)) {
                 throw new \Exception("Property '{$propertyKey}' requires its value to be an array");
             }
 
@@ -41,7 +41,7 @@ trait HasProperties
 
                 foreach ($requiredParams as $key) {
                     if (!isset($value[$key])) {
-                        $value[$key] = $defaultValues[$key]['default'];
+                        $value[$key] = $defaultValues[$key]->default;
                     }
                 }
             }
