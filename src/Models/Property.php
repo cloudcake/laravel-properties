@@ -191,13 +191,14 @@ class Property extends Model
     public static function schema(string $key, array $targets, array $schema)
     {
         collect($schema)->each(function ($v, $k) use ($key) {
-            if (!isset($v->key)) {
+
+            if (!isset($v['key'])) {
                 throw new \Exception("One or more items in '{$key}' do not contain the required 'key' field");
-            } elseif (!isset($v->default)) {
+            } elseif (!isset($v['default'])) {
                 throw new \Exception("One or more items in '{$key}' do not contain the required 'default' field");
-            } elseif (!isset($v->type)) {
+            } elseif (!isset($v['type'])) {
                 throw new \Exception("One or more items in '{$key}' do not contain the required 'type' field");
-            } elseif (!isset($v->label)) {
+            } elseif (!isset($v['label'])) {
                 throw new \Exception("One or more items in '{$key}' do not contain the required 'label' field");
             }
         });
