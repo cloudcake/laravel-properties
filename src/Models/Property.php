@@ -191,6 +191,8 @@ class Property extends Model
     public static function schema(string $key, array $targets, array $schema)
     {
         collect($schema)->each(function ($v, $k) use ($key) {
+            $v = (array) $v;
+            
             if (!isset($v['key'])) {
                 throw new \Exception("One or more items in '{$key}' do not contain the required 'key' field");
             } elseif (!isset($v['default'])) {
