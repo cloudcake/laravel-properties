@@ -20,7 +20,7 @@ class CreatePropertyablesTable extends Migration
             $table->json('value')->nullable();
             $table->timestamps();
 
-            $table->index(['key']);
+            $table->index(['property_key']);
         });
     }
 
