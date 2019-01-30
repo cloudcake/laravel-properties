@@ -1,6 +1,6 @@
 {
   "name": "stephenlake/laravel-properties",
-  "description": "Associate plain text configurations/properties to any other model.",
+  "description": "Associate generic data to any other model without polluting your application model logic, for Laravel.",
   "type": "library",
   "license": "MIT",
   "authors": [{
