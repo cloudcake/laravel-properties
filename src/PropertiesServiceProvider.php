@@ -39,7 +39,5 @@ class PropertiesServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/Migrations' => database_path('migrations'),
         ], 'migrations');
-
-        $this->loadMigrationsFrom(__DIR__.'/Migrations');
     }
 }
