@@ -26,7 +26,7 @@ class PropertiesServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/Config/config.php' => config_path('properties.php'),
-        ]);
+        ], 'config');
     }
 
     /**
@@ -38,6 +38,6 @@ class PropertiesServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/Migrations' => database_path('migrations'),
-        ]);
+        ], 'migrations');
     }
 }
