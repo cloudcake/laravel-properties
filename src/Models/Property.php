@@ -192,7 +192,7 @@ class Property extends Model
     {
         collect($schema)->each(function ($v, $k) use ($key) {
             $v = (array) $v;
-            
+
             if (!isset($v['key'])) {
                 throw new \Exception("One or more items in '{$key}' do not contain the required 'key' field");
             } elseif (!isset($v['default'])) {
