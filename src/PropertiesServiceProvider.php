@@ -36,6 +36,8 @@ class PropertiesServiceProvider extends ServiceProvider
      */
     private function registerMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__.'/Migrations');
+        $this->publishes([
+            __DIR__.'/Migrations' => database_path('migrations'),
+        ]);
     }
 }
