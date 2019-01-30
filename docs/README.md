@@ -24,6 +24,14 @@ Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `c
 
 `php artisan vendor:publish --provider="Properties\PropertiesServiceProvider" --tag="config"`
 
+## Publish migrations
+
+`php artisan vendor:publish --provider="Properties\PropertiesServiceProvider" --tag="migrations"`
+
+## Run migrations
+
+`php artisan migrate`
+
 # Setting Up
 The only requirement to start attaching properties to models is to add the `\Properties\HasProperties`  trait:
 
@@ -219,7 +227,7 @@ Property::schema('THEME', ['USER'], [
         [label] => Sidebar Background Colour
         [default] => #18273E
    ]
-]); 
+]);
 ```
 
 ### Assigning a Schema Property to a model
