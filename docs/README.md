@@ -139,7 +139,7 @@ If making use of the `targets` field, you may retrieve only properties that fit 
 
 ```php
 // Get properties targetting 'PERSON'
-Property::targeting('PERSON')->get();
+Property::targetting('PERSON')->get();
 
 // Get properties targetting 'PERSON' or 'ANIMALS' or 'COMPUTERS'
 Property::targetting(['PERSON','ANIMALS','COMPUTERS'])->get();
