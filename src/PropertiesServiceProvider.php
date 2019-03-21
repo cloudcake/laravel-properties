@@ -25,7 +25,7 @@ class PropertiesServiceProvider extends ServiceProvider
     private function registerConfigurations()
     {
         $this->publishes([
-            __DIR__.'/Config/config.php' => config_path('properties.php'),
+            __DIR__.'/Config/properties.php' => config_path('properties.php'),
         ], 'config');
     }
 
