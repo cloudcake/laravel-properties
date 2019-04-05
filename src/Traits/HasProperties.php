@@ -2,6 +2,8 @@
 
 namespace Properties\Traits;
 
+use Closure;
+
 trait HasProperties
 {
     /**
@@ -20,13 +22,19 @@ trait HasProperties
      *
      * @return \Properties\Models\Property
      */
-    public function attachProperty($propertyKey, $value = null)
+    public function attachProperty($propertyKey, $value = null, $conditions = null)
     {
         $model = config('properties.model', \Properties\Models\Property::class);
-        $property = $model::find($propertyKey);
+        $model = new $model;
+
+        if ($conditions && $conditions instanceof Closure) {
+            $model = $model->where($conditions);
+        }
+
+        $property = $model->find($propertyKey);
 
         if (!$property) {
-            throw new \Exception("Property '{$propertyKey}' not found");
+            throw new \Exception("Property '{$propertyKey}' not found with matching conditions");
         }
 
         if ($property->type == 'JSON' || $property->type == 'SCHEMA') {
@@ -35,9 +43,9 @@ trait HasProperties
             }
 
             if ($property->type == 'SCHEMA') {
-                $originalProps = collect($property->default)->keyBy('key');
+                $originalProps  = collect($property->default)->keyBy('key');
                 $requiredParams = $originalProps->keys();
-                $defaultValues = $originalProps->all();
+                $defaultValues  = $originalProps->all();
 
                 foreach ($requiredParams as $key) {
                     if (!isset($value[$key])) {
