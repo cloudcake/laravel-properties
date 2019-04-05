@@ -25,7 +25,7 @@ trait HasProperties
     public function attachProperty($propertyKey, $value = null, $conditions = null)
     {
         $model = config('properties.model', \Properties\Models\Property::class);
-        $model = new $model;
+        $model = new $model();
 
         if ($conditions && $conditions instanceof Closure) {
             $model = $model->where($conditions);
@@ -43,9 +43,9 @@ trait HasProperties
             }
 
             if ($property->type == 'SCHEMA') {
-                $originalProps  = collect($property->default)->keyBy('key');
+                $originalProps = collect($property->default)->keyBy('key');
                 $requiredParams = $originalProps->keys();
-                $defaultValues  = $originalProps->all();
+                $defaultValues = $originalProps->all();
 
                 foreach ($requiredParams as $key) {
                     if (!isset($value[$key])) {
