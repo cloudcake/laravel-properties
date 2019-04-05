@@ -94,7 +94,7 @@ class Property extends Model
      */
     public function setDefaultAttribute($value)
     {
-        switch ($this->attributes['type']) {
+        switch ($this->attributes['type'] ?? 'JSON') {
           case 'JSON':
               $this->attributes['default'] = json_encode($value);
               break;
@@ -140,7 +140,7 @@ class Property extends Model
      */
     public function getDefaultAttribute($value)
     {
-        switch ($this->attributes['type']) {
+        switch ($this->attributes['type'] ?? 'JSON') {
           case 'JSON':
               $value = !is_array($value) ? json_decode($value) : $value;
               break;
