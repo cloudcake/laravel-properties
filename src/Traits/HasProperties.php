@@ -14,7 +14,8 @@ trait HasProperties
     public function properties()
     {
         return $this->morphToMany(config('properties.model', \Properties\Models\Property::class), 'propertyable')
-                    ->using(\Properties\Models\Propertyable::class);
+                    ->using(\Properties\Models\Propertyable::class)
+                    ->withPivot('value');
     }
 
     /**
