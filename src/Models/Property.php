@@ -6,14 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Property extends Model
 {
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'default' => 'object'
-    ];
 
     /**
      * The guarded attributes.
@@ -31,12 +23,14 @@ class Property extends Model
      */
     public function getValueAttribute($value)
     {
-        $value = ($value ?? ($this->value ?? $this->default));
+        $value = ($value ?? ($this->getOriginal('pivot_value') ?? $this->default));
 
         if ($this->type == 'INT' || $this->type == 'INTEGER') {
             $value = intval($value);
         } elseif ($this->type == 'BOOL' || $this->type == 'BOOLEAN') {
             $value = boolval($value);
+        } elseif ($this->type == 'JSON') {
+            $value = array_merge((array) $this->default, (array) json_decode($value));
         }
 
         return $value;
