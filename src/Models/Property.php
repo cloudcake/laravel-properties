@@ -15,8 +15,7 @@ class Property extends Model
         'key'     => 'string',
         'type'    => 'string',
         'targets' => 'array',
-        'default' => 'object',
-        'value'   => 'object'
+        'default' => 'object'
     ];
 
     /**
@@ -31,6 +30,21 @@ class Property extends Model
         'targets',
         'default'
     ];
+
+    public function getValueAttribute($value)
+    {
+        $value = $value ??  $this->default;
+
+        if ($this->type == 'INT' || $this->type == 'INTEGER') {
+            $value = intval($value);
+        } elseif ($this->type == 'BOOL' || $this->type == 'BOOLEAN') {
+            $value = boolval($value);
+        } elseif (is_string($value)) {
+            $value = json_decode($value) ?? $value;
+        }
+
+        return $value;
+    }
 
     /**
      * Mutate the key to always be uppercase.

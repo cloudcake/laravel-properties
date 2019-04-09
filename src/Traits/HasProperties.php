@@ -14,8 +14,7 @@ trait HasProperties
     public function properties()
     {
         return $this->morphToMany(config('properties.model', \Properties\Models\Property::class), 'propertyable')
-                    ->using(\Properties\Models\Propertyable::class)
-                    ->withPivot('value');
+                    ->using(\Properties\Models\Propertyable::class);
     }
 
     /**
@@ -53,12 +52,22 @@ trait HasProperties
                         $value[$key] = $defaultValues[$key]->default;
                     }
                 }
+            } else {
+                $originalProps  = collect($property->default);
+                $requiredParams = $originalProps->keys();
+                $defaultValues  = $originalProps->all();
+
+                foreach ($requiredParams as $key) {
+                    if (!isset($value[$key])) {
+                        $value[$key] = $defaultValues[$key];
+                    }
+                }
             }
 
             $value = json_encode($value);
         }
 
-        $this->properties()->attach($property, ['value' => $value]);
+        $this->properties()->attach($property, ['value' => $value ?? $property->default]);
 
         return $this;
     }
