@@ -40,7 +40,7 @@ class Property extends Model
      */
     public function getValueAttribute($value)
     {
-        $value = $value ??  $this->default;
+        $value = $this->value ?? $this->default;
 
         if ($this->type == 'INT' || $this->type == 'INTEGER') {
             $value = intval($value);
