@@ -40,14 +40,12 @@ class Property extends Model
      */
     public function getValueAttribute($value)
     {
-        $value = $this->value ?? $this->default;
+        $value = ($value ?? ($this->value ?? $this->default));
 
         if ($this->type == 'INT' || $this->type == 'INTEGER') {
             $value = intval($value);
         } elseif ($this->type == 'BOOL' || $this->type == 'BOOLEAN') {
             $value = boolval($value);
-        } elseif (is_string($value)) {
-            $value = json_decode($value) ?? $value;
         }
 
         return $value;

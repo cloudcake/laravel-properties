@@ -104,7 +104,6 @@ class PropertiesTest extends TestCase
 
         $this->assertTrue(is_int($john->properties()->firstKey('LIMB_COUNT')->value));
         $this->assertTrue(is_string($john->properties()->firstKey('EYE_COLOUR')->value));
-        $this->assertTrue(is_object($john->properties()->firstKey('CONFIG')->value));
         $this->assertTrue($john->properties()->firstKey('IS_TALL_PERSON')->value === true);
     }
 }
