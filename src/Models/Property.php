@@ -14,7 +14,9 @@ class Property extends Model
     protected $casts = [
         'key'     => 'string',
         'type'    => 'string',
-        'targets' => 'array'
+        'targets' => 'array',
+        'default' => 'object',
+        'value'   => 'object'
     ];
 
     /**
@@ -47,92 +49,17 @@ class Property extends Model
      */
     public function getValueAttribute($value)
     {
-        $type = $this->attributes['type'] ?? 'JSON';
+        $value = $value ?? $this->default;
 
-        if (!($value ?? false)) {
-            if ($type == 'SCHEMA' || $type == 'JSON') {
-                $value = collect($this->default)->keyBy('key')->transform(function ($value) {
-                    return $value->default;
-                })->all();
-            } else {
-                $value = $this->default;
-            }
-        }
-
-        switch ($type) {
-            case 'JSON':
-                $value = json_decode($value) ?? $value;
-                break;
-            case 'SCHEMA':
-                $value = json_decode($value) ?? $value;
-                break;
-            case 'INT':
-            case 'INTEGER':
-                $value = intval($value);
-                break;
-            case 'BOOL':
-            case 'BOOLEAN':
-                $value = boolval($value);
-                break;
-            default:
-                $value = $value;
-                break;
+        if ($this->type == 'INT' || $this->type == 'INTEGER') {
+            $value = intval($value);
+        } elseif ($this->type == 'BOOL' || $this->type == 'BOOLEAN') {
+            $value = boolval($value);
+        } else {
+            $value = json_decode($value) ?? $value;
         }
 
         return $value;
-    }
-
-
-    /**
-     * Mutator fallback for empty targets value.
-     *
-     * @return mixed
-     */
-    public function getTargetsAttribute($value)
-    {
-        $value = is_string($value) ? json_decode($value) ?? $value : $value;
-
-        return $value;
-    }
-
-    /**
-     * Mutate the value relative to the type..
-     *
-     * @param string $value
-     *
-     * @return array
-     */
-    public function setDefaultAttribute($value)
-    {
-        $this->attributes['default'] = $value;
-
-        $type = $this->attributes['type'] ?? 'JSON';
-
-        switch ($type) {
-            case 'JSON':
-                $this->attributes['default'] = json_encode($value) ?? $value;
-                break;
-
-            case 'SCHEMA':
-                $this->attributes['default'] = json_encode($value) ?? $value;
-                break;
-
-            case 'INT':
-            case 'INTEGER':
-                $this->attributes['default'] = intval($value);
-                break;
-
-            case 'BOOL':
-            case 'BOOLEAN':
-                $this->attributes['default'] = boolval($value);
-                break;
-
-            default:
-                $this->attributes['default'] = $value;
-                break;
-        }
-
-        return $this->attributes['default'];
     }
 
     /**
@@ -146,7 +73,6 @@ class Property extends Model
     {
         $this->attributes['key'] = strtoupper($value);
     }
-
 
     /**
      * Mutate the type to always be uppercase.
