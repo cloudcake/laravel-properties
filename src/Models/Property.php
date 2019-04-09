@@ -33,40 +33,6 @@ class Property extends Model
     ];
 
     /**
-     * The attributes that are appended to the model.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'value'
-    ];
-
-    /**
-     * Returns the value of the property.
-     *
-     * @return mixed
-     */
-    public function getValueAttribute($value)
-    {
-        $value = $value ?? ($this->pivot_value ?? $this->default);
-
-        if ($this->type == 'INT' || $this->type == 'INTEGER') {
-            $value = intval($value);
-        } elseif ($this->type == 'BOOL' || $this->type == 'BOOLEAN') {
-            $value = boolval($value);
-        } else {
-            $value = json_decode($value) ?? $value;
-        }
-
-        return $value;
-    }
-
-    public function getPivotValueAttribute($value)
-    {
-        return $this->getValueAttribute($value);
-    }
-
-    /**
      * Mutate the key to always be uppercase.
      *
      * @param string $value
