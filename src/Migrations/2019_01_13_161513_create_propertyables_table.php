@@ -14,7 +14,7 @@ class CreatePropertyablesTable extends Migration
     public function up()
     {
         Schema::create('propertyables', function (Blueprint $table) {
-            $table->bigInteger('property_id', 32);
+            $table->bigInteger('property_id');
             $table->bigInteger('propertyable_id');
             $table->string('propertyable_type');
             $table->longText('value')->nullable();

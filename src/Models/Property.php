@@ -33,23 +33,22 @@ class Property extends Model
     ];
 
     /**
-     * The attributes that appended to the model.
+     * The attributes that are appended to the model.
      *
      * @var array
      */
     protected $appends = [
-        'value',
+        'value'
     ];
 
     /**
-     * Returns the value of the property. Returns the default value
-     * if no value has been defined.
+     * Returns the value of the property.
      *
      * @return mixed
      */
     public function getValueAttribute($value)
     {
-        $value = $value ?? $this->default;
+        $value = $value ?? ($this->pivot_value ?? $this->default);
 
         if ($this->type == 'INT' || $this->type == 'INTEGER') {
             $value = intval($value);
@@ -60,6 +59,11 @@ class Property extends Model
         }
 
         return $value;
+    }
+
+    public function getPivotValueAttribute($value)
+    {
+        return $this->getValueAttribute($value);
     }
 
     /**
