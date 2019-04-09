@@ -30,7 +30,7 @@ class Property extends Model
         } elseif ($this->type == 'BOOL' || $this->type == 'BOOLEAN') {
             $value = boolval($value);
         } elseif ($this->type == 'JSON') {
-            $value = array_merge((array) $this->default, (array) json_decode($value));
+            $value = json_encode(array_merge(json_decode($this->default, true), json_decode($value, true)), JSON_PRETTY_PRINT);
         }
 
         return $value;
