@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 class Propertyable extends MorphPivot
 {
 
-
   /**
    * Mutate the value based on the property type.
    *

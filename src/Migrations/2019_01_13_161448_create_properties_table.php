@@ -15,13 +15,13 @@ class CreatePropertiesTable extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('key', 32);
+            $table->string('name');
             $table->string('type')->nullable();
             $table->string('group')->nullable();
             $table->longText('default');
             $table->timestamps();
 
-            $table->index(['key', 'type', 'group']);
+            $table->index(['name', 'type', 'group']);
         });
     }
 
