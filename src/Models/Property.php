@@ -14,7 +14,6 @@ class Property extends Model
     protected $casts = [
         'key'     => 'string',
         'type'    => 'string',
-        'targets' => 'array',
         'default' => 'object'
     ];
 
@@ -27,7 +26,6 @@ class Property extends Model
         'key',
         'group',
         'type',
-        'targets',
         'default'
     ];
 
@@ -73,19 +71,6 @@ class Property extends Model
     public function setTypeAttribute($value)
     {
         $this->attributes['type'] = strtoupper($value);
-    }
-
-    /**
-     * Scope to only return properties that target an array of items.
-     *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array|string                          $targets
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeTargetting($query, $targets = [])
-    {
-        return $query->whereJsonContains('targets', $targets);
     }
 
     /**

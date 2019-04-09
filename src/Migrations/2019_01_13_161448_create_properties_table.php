@@ -18,7 +18,6 @@ class CreatePropertiesTable extends Migration
             $table->string('key', 32);
             $table->string('type')->nullable();
             $table->string('group')->nullable();
-            $table->json('targets')->nullable();
             $table->longText('default');
             $table->timestamps();
 
