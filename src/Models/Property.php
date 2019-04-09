@@ -31,6 +31,13 @@ class Property extends Model
         'default'
     ];
 
+    /**
+     * Mutate the value based on the property type.
+     *
+     * @param string $value
+     *
+     * @return mixed
+     */
     public function getValueAttribute($value)
     {
         $value = $value ??  $this->default;
