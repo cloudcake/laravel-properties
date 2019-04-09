@@ -31,7 +31,7 @@ trait HasProperties
             $model = $model->where($conditions);
         }
 
-        $property = $model->find($propertyKey);
+        $property = $model->firstKey($propertyKey);
 
         if (!$property) {
             throw new \Exception("Property '{$propertyKey}' not found with matching conditions");
@@ -43,9 +43,9 @@ trait HasProperties
             }
 
             if ($property->type == 'SCHEMA') {
-                $originalProps = collect($property->default)->keyBy('key');
+                $originalProps  = collect($property->default)->keyBy('key');
                 $requiredParams = $originalProps->keys();
-                $defaultValues = $originalProps->all();
+                $defaultValues  = $originalProps->all();
 
                 foreach ($requiredParams as $key) {
                     if (!isset($value[$key])) {
@@ -57,7 +57,7 @@ trait HasProperties
             $value = json_encode($value);
         }
 
-        $this->properties()->attach($propertyKey, ['value' => $value]);
+        $this->properties()->attach($property, ['value' => $value]);
 
         return $this;
     }

@@ -38,8 +38,8 @@ class PropertiesTest extends TestCase
         $john->attachProperty('LIMB_COUNT', 48);
         $john->attachProperty('EYE_COLOUR', 'Blue');
 
-        $this->assertTrue($john->properties()->find('LIMB_COUNT')->value == 48);
-        $this->assertTrue($john->properties()->find('EYE_COLOUR')->value == 'Blue');
+        $this->assertTrue($john->properties()->firstKey('LIMB_COUNT')->value == 48);
+        $this->assertTrue($john->properties()->firstKey('EYE_COLOUR')->value == 'Blue');
     }
 
     public function testPropertyDefaultsAreSetWhenNotProvided()
@@ -62,8 +62,8 @@ class PropertiesTest extends TestCase
         $john->attachProperty('LIMB_COUNT');
         $john->attachProperty('EYE_COLOUR');
 
-        $this->assertTrue($john->properties()->find('LIMB_COUNT')->value == 2222);
-        $this->assertTrue($john->properties()->find('EYE_COLOUR')->value == 'Unknown');
+        $this->assertTrue($john->properties()->firstKey('LIMB_COUNT')->value == 2222);
+        $this->assertTrue($john->properties()->firstKey('EYE_COLOUR')->value == 'Unknown');
     }
 
     public function testValuesAreCorrectlyCast()
@@ -102,9 +102,9 @@ class PropertiesTest extends TestCase
         $john->attachProperty('CONFIG', ['bouncing' => 'ball', 'heavy' => 'egg']);
         $john->attachProperty('IS_TALL_PERSON', true);
 
-        $this->assertTrue(is_int($john->properties()->find('LIMB_COUNT')->value));
-        $this->assertTrue(is_string($john->properties()->find('EYE_COLOUR')->value));
-        $this->assertTrue(is_object($john->properties()->find('CONFIG')->value));
-        $this->assertTrue($john->properties()->find('IS_TALL_PERSON')->value === true);
+        $this->assertTrue(is_int($john->properties()->firstKey('LIMB_COUNT')->value));
+        $this->assertTrue(is_string($john->properties()->firstKey('EYE_COLOUR')->value));
+        $this->assertTrue(is_object($john->properties()->firstKey('CONFIG')->value));
+        $this->assertTrue($john->properties()->firstKey('IS_TALL_PERSON')->value === true);
     }
 }

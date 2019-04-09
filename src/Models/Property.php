@@ -7,20 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Property extends Model
 {
     /**
-     * The primary key column name.
-     *
-     * @var array
-     */
-    public $primaryKey = 'key';
-
-    /**
-     * Whether the primary key is incremental.
-     *
-     * @var bool
-     */
-    public $increments = false;
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -28,7 +14,7 @@ class Property extends Model
     protected $casts = [
         'key'     => 'string',
         'type'    => 'string',
-        'targets' => 'json',
+        'targets' => 'array'
     ];
 
     /**
@@ -38,9 +24,10 @@ class Property extends Model
      */
     protected $fillable = [
         'key',
+        'group',
         'type',
         'targets',
-        'default',
+        'default'
     ];
 
     /**
@@ -56,21 +43,96 @@ class Property extends Model
      * Returns the value of the property. Returns the default value
      * if no value has been defined.
      *
-     * @return array
+     * @return mixed
      */
-    public function getValueAttribute()
+    public function getValueAttribute($value)
     {
-        $value = $this->pivot->value ?? $this->default;
+        $type = $this->attributes['type'] ?? 'JSON';
 
-        if ($this->attributes['type'] == 'SCHEMA') {
-            if (!($this->pivot->value ?? false)) {
-                return collect($this->default)->keyBy('key')->transform(function ($value) {
+        if (!($value ?? false)) {
+            if ($type == 'SCHEMA' || $type == 'JSON') {
+                $value = collect($this->default)->keyBy('key')->transform(function ($value) {
                     return $value->default;
                 })->all();
+            } else {
+                $value = $this->default;
             }
         }
 
-        return $this->getDefaultAttribute($value);
+        switch ($type) {
+            case 'JSON':
+                $value = json_decode($value) ?? $value;
+                break;
+            case 'SCHEMA':
+                $value = json_decode($value) ?? $value;
+                break;
+            case 'INT':
+            case 'INTEGER':
+                $value = intval($value);
+                break;
+            case 'BOOL':
+            case 'BOOLEAN':
+                $value = boolval($value);
+                break;
+            default:
+                $value = $value;
+                break;
+        }
+
+        return $value;
+    }
+
+
+    /**
+     * Mutator fallback for empty targets value.
+     *
+     * @return mixed
+     */
+    public function getTargetsAttribute($value)
+    {
+        $value = is_string($value) ? json_decode($value) ?? $value : $value;
+
+        return $value;
+    }
+
+    /**
+     * Mutate the value relative to the type..
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    public function setDefaultAttribute($value)
+    {
+        $this->attributes['default'] = $value;
+
+        $type = $this->attributes['type'] ?? 'JSON';
+
+        switch ($type) {
+            case 'JSON':
+                $this->attributes['default'] = json_encode($value) ?? $value;
+                break;
+
+            case 'SCHEMA':
+                $this->attributes['default'] = json_encode($value) ?? $value;
+                break;
+
+            case 'INT':
+            case 'INTEGER':
+                $this->attributes['default'] = intval($value);
+                break;
+
+            case 'BOOL':
+            case 'BOOLEAN':
+                $this->attributes['default'] = boolval($value);
+                break;
+
+            default:
+                $this->attributes['default'] = $value;
+                break;
+        }
+
+        return $this->attributes['default'];
     }
 
     /**
@@ -85,39 +147,6 @@ class Property extends Model
         $this->attributes['key'] = strtoupper($value);
     }
 
-    /**
-     * Mutate the value relative to the type..
-     *
-     * @param string $value
-     *
-     * @return array
-     */
-    public function setDefaultAttribute($value)
-    {
-        switch ($this->attributes['type'] ?? 'JSON') {
-          case 'JSON':
-              $this->attributes['default'] = json_encode($value);
-              break;
-
-          case 'SCHEMA':
-              $this->attributes['default'] = json_encode($value);
-              break;
-
-          case 'INT':
-          case 'INTEGER':
-              $this->attributes['default'] = intval($value);
-              break;
-
-          case 'BOOL':
-          case 'BOOLEAN':
-              $this->attributes['default'] = boolval($value);
-              break;
-
-          default:
-              $this->attributes['default'] = $value;
-              break;
-        }
-    }
 
     /**
      * Mutate the type to always be uppercase.
@@ -132,41 +161,6 @@ class Property extends Model
     }
 
     /**
-     * Mutate the default value according to its type.
-     *
-     * @param string $value
-     *
-     * @return array
-     */
-    public function getDefaultAttribute($value)
-    {
-        switch ($this->attributes['type'] ?? 'JSON') {
-          case 'JSON':
-              $value = !is_array($value) ? json_decode($value) : $value;
-              break;
-
-          case 'SCHEMA':
-              $value = !is_array($value) ? json_decode($value) : $value;
-              break;
-
-          case 'INT':
-          case 'INTEGER':
-              $value = intval($value);
-              break;
-
-          case 'BOOL':
-          case 'BOOLEAN':
-              $value = boolval($value);
-              break;
-
-          default:
-              break;
-        }
-
-        return $value;
-    }
-
-    /**
      * Scope to only return properties that target an array of items.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
@@ -177,6 +171,19 @@ class Property extends Model
     public function scopeTargetting($query, $targets = [])
     {
         return $query->whereJsonContains('targets', $targets);
+    }
+
+    /**
+     * Scope to only find first property by key.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array|string                          $key
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFirstKey($query, $key)
+    {
+        return $query->where('key', $key)->first();
     }
 
     /**
