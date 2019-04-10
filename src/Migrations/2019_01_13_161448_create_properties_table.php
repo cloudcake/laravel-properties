@@ -14,14 +14,13 @@ class CreatePropertiesTable extends Migration
     public function up()
     {
         Schema::create('properties', function (Blueprint $table) {
-            $table->string('key', 32)->unique();
-            $table->string('type')->nullable();
-            $table->string('group')->nullable();
-            $table->json('targets')->nullable();
-            $table->json('default');
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->string('type')->default('STRING');
+            $table->longText('default');
             $table->timestamps();
 
-            $table->index(['key', 'type', 'group']);
+            $table->index(['name', 'type']);
         });
     }
 
