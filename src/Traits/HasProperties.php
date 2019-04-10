@@ -33,7 +33,7 @@ trait HasProperties
         }
 
         if (!$property) {
-            throw new \Exception("Property not found");
+            throw new \Exception('Property not found');
         }
 
         if ($property->type == 'JSON' && !is_string($value)) {
@@ -49,8 +49,8 @@ trait HasProperties
      * Returns the first association of the provided property name with
      * casted values.
      *
-     * @param string  $name
-     * @param boolean $toArray
+     * @param string $name
+     * @param bool   $toArray
      *
      * @return mixed
      */

@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 class Propertyable extends MorphPivot
 {
-
-  /**
-   * Mutate the value based on the property type.
-   *
-   * @param string $value
-   *
-   * @return mixed
-   */
+    /**
+     * Mutate the value based on the property type.
+     *
+     * @param string $value
+     *
+     * @return mixed
+     */
     public function getValueAttribute($value)
     {
         $value = $this->property->getValueAttribute($this->attributes['value'] ?? null);
@@ -48,7 +47,7 @@ class Propertyable extends MorphPivot
                 break;
         }
 
-        $this->attributes['value'] =  $value;
+        $this->attributes['value'] = $value;
     }
 
     /**

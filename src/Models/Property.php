@@ -26,14 +26,14 @@ class Property extends Model
     {
         $type = strtoupper($type);
 
-        if ($type == 'JSON'&& !is_string($params)) {
+        if ($type == 'JSON' && !is_string($params)) {
             $params = json_encode($params);
         }
 
         return self::create([
             'name'    => $name,
             'type'    => $type,
-            'default' => $params
+            'default' => $params,
         ]);
     }
 
