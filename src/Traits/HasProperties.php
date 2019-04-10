@@ -30,7 +30,7 @@ trait HasProperties
 
         if (!($property instanceof $class)) {
             if (is_string($property)) {
-                $property = $class::where('name', $property)->first();
+                $property = $class::where('id', $property)->orWhere('name', $property)->first();
             } else {
                 $property = $class::find($property);
             }
@@ -47,6 +47,32 @@ trait HasProperties
         $this->properties()->attach($property->id, ['value' => $value]);
 
         return $this;
+    }
+
+    /**
+     * A simplified alias for detaching a property.
+     *
+     * @param mixed $property
+     *
+     * @return boolean
+     */
+    public function detachProperty($property)
+    {
+        $class = config('properties.model', \Properties\Models\Property::class);
+
+        if (!($property instanceof $class)) {
+            if (is_string($property)) {
+                $property = $class::where('id', $property)->orWhere('name', $property)->first();
+            } else {
+                $property = $class::find($property);
+            }
+        }
+
+        if ($property) {
+            return $this->properties()->detach($property->id);
+        }
+
+        return false;
     }
 
     /**
