@@ -54,12 +54,12 @@ Once you have created at least one property, you can associate it to any other m
 
 ## Creating a Property
 
-Creating a property follows the same process as you would create any other model. In our example we'll assume we have a `Person` model, a `MAX_DOWNLOADS_ALLOWED` property and a `API_CONFIG` property:
+Creating a property follows the same process as you would create any other model. In our example we'll assume we have a `Person` model, a `MAX_DOWNLOADS` property and a `API_CONFIG` property:
 
 ```php
 use Properties\Models\Property;
 
-Property::make('MAX_DOWNLOADS_ALLOWED', 'INT', 200);
+Property::make('MAX_DOWNLOADS', 'INT', 200);
 
 Property::make('API_CONFIG', 'JSON', [
   'username' => null,
@@ -76,11 +76,11 @@ use App\User;
 
 $user = User::first();
 
-// Attach the MAX_DOWNLOADS_ALLOWED property with a custom value of 700.
-$user->attachProperty('MAX_DOWNLOADS_ALLOWED', 700);
+// Attach the MAX_DOWNLOADS property with a custom value of 700.
+$user->attachProperty('MAX_DOWNLOADS', 700);
 
-// Attach the MAX_DOWNLOADS_ALLOWED property with the default Property value.
-$user->attachProperty('MAX_DOWNLOADS_ALLOWED');
+// Attach the MAX_DOWNLOADS property with the default Property value.
+$user->attachProperty('MAX_DOWNLOADS');
 ```
 
 ## Detaching a Property from Models
@@ -90,10 +90,12 @@ Detaching properties is done in the same way regular Laravel detaching is done:
 ```php
 use App\User;
 
-$property = Property::whereName('MAX_DOWNLOADS_ALLOWED')->first();
+$property = Property::whereName('MAX_DOWNLOADS')->first();
 
 $user = User::first();
 $user->properties()->detach($property);
+// or
+$user->properties()->detach($property->id);
 ```
 
 ## Retrieving Properties attached to a model
