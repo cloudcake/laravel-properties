@@ -37,10 +37,9 @@ Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `c
 The only requirement to start attaching properties to models is to add the `\Properties\Traits\HasProperties`  trait:
 
 ```php
-use Illuminate\Database\Eloquent\Model;
 use Properties\Traits\HasProperties;
 
-class Person extends Model
+class User extends \Illuminate\Database\Eloquent\Model
 {
     use HasProperties;
 }
@@ -50,16 +49,17 @@ That's it. See the usage section for examples.
 
 # Usage
 
-Once you have created at least one property, you can associate it to any other model with optional custom values. If an association is made with missing fields, the defaults will be returned when retriving the associated property.
-
 ## Creating a Property
-
-Creating a property follows the same process as you would create any other model. In our example we'll assume we have a `Person` model, a `MAX_DOWNLOADS` property and a `API_CONFIG` property:
 
 ```php
 use Properties\Models\Property;
 
 Property::make('MAX_DOWNLOADS', 'INT', 200);
+
+Property::make('OTHER_CONFIG', 'ARRAY', [
+  'username' => null,
+  'password' => null
+]);
 
 Property::make('API_CONFIG', 'JSON', [
   'username' => null,
@@ -68,8 +68,6 @@ Property::make('API_CONFIG', 'JSON', [
 ```
 
 ## Attaching a Property to Models
-
-Once you've created your properties with default values, associating them to any model that contains the `HasProperties` attribute is as simple as calling `attachProperty` with the name of the property as the first parameter and the overriding values as a second parameter:
 
 ```php
 use App\User;
@@ -85,29 +83,23 @@ $user->attachProperty('MAX_DOWNLOADS');
 
 ## Detaching a Property from Models
 
-Detaching properties is done in the same way regular Laravel detaching is done:
-
 ```php
 use App\User;
 
-$property = Property::whereName('MAX_DOWNLOADS')->first();
-
-$user = User::first();
-$user->properties()->detach($property);
-// or
-$user->properties()->detach($property->id);
+// Attach the MAX_DOWNLOADS property with a custom value of 700.
+$user->detachProperty('MAX_DOWNLOADS');
 ```
 
 ## Retrieving Properties attached to a model
-
-Since the properties associating are a regular Laravel polymorphic relationship, you can call your eloquent queries as you usually would to retrieve properties:
 
 ```php
 $john = User::find(1337);
 
 $john->attachProperty('API_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
+$john->attachProperty('OTHER_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
 $john->attachProperty('MAX_DOWNLOADS', 123);
 
-$john->property('API_CONFIG');    // ['username' => 'foobar', 'password' => 'p455w0rd']
+$john->property('API_CONFIG');    // {"username":"foobar","password":"p455w0rd"}
+$john->property('OTHER_CONFIG');  // ['username' => 'foobar', 'password' => 'p455w0rd']
 $john->property('MAX_DOWNLOADS'); // 123
 ```
