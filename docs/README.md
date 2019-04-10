@@ -34,7 +34,7 @@ Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `c
 
 # Setting Up
 
-The only requirement to start attaching properties to models is to add the `\Properties\HasProperties`  trait:
+The only requirement to start attaching properties to models is to add the `\Properties\Traits\HasProperties`  trait:
 
 ```php
 use Illuminate\Database\Eloquent\Model;
