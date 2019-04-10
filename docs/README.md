@@ -38,7 +38,7 @@ The only requirement to start attaching properties to models is to add the `\Pro
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Properties\HasProperties;
+use Properties\Traits\HasProperties;
 
 class Person extends Model
 {
