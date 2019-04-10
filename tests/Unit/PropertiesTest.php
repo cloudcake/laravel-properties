@@ -10,100 +10,52 @@ class PropertiesTest extends TestCase
 {
     public function testPropertyCanBeCreated()
     {
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'EYE_COLOUR',
-          'type'    => 'STRING',
-          'targets' => [],
-          'default' => 'Unknown',
-        ])));
+        $property = Property::make('EYE_COLOUR', 'STRING', 'Unknown');
+
+        $this->assertTrue(!is_null($property));
     }
 
     public function testPropertiesAreAssignable()
     {
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'EYE_COLOUR',
-          'type'    => 'STRING',
-          'targets' => [],
-          'default' => 'Unknown',
-        ])));
-
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'LIMB_COUNT',
-          'type'    => 'INT',
-          'targets' => [],
-          'default' => 2,
-        ])));
+        $eyeColour = Property::make('EYE_COLOUR', 'STRING', 'Unknown');
+        $limbCount = Property::make('LIMB_COUNT', 'STRING', 'Unknown');
 
         $john = Person::first();
-        $john->attachProperty('LIMB_COUNT', 48);
-        $john->attachProperty('EYE_COLOUR', 'Blue');
+        $john->attachProperty($limbCount, 48);
+        $john->attachProperty($eyeColour, 'Blue');
 
-        $this->assertTrue($john->properties()->firstKey('LIMB_COUNT')->value == 48);
-        $this->assertTrue($john->properties()->firstKey('EYE_COLOUR')->value == 'Blue');
+        $this->assertTrue($john->property('LIMB_COUNT') == 48);
+        $this->assertTrue($john->property('EYE_COLOUR') == 'Blue');
     }
 
     public function testPropertyDefaultsAreSetWhenNotProvided()
     {
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'EYE_COLOUR',
-          'type'    => 'STRING',
-          'targets' => [],
-          'default' => 'Unknown',
-        ])));
-
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'LIMB_COUNT',
-          'type'    => 'INT',
-          'targets' => [],
-          'default' => 2222,
-        ])));
+        $eyeColour = Property::make('EYE_COLOUR', 'STRING', 'Unknown');
+        $limbCount = Property::make('LIMB_COUNT', 'STRING', 'Unknown');
 
         $john = Person::first();
-        $john->attachProperty('LIMB_COUNT');
         $john->attachProperty('EYE_COLOUR');
+        $john->attachProperty('LIMB_COUNT');
 
-        $this->assertTrue($john->properties()->firstKey('LIMB_COUNT')->value == 2222);
-        $this->assertTrue($john->properties()->firstKey('EYE_COLOUR')->value == 'Unknown');
+        $this->assertTrue($john->property('LIMB_COUNT') == 'Unknown');
+        $this->assertTrue($john->property('EYE_COLOUR') == 'Unknown');
     }
 
     public function testValuesAreCorrectlyCast()
     {
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'EYE_COLOUR',
-          'type'    => 'STRING',
-          'targets' => [],
-          'default' => 'Unknown',
-        ])));
-
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'LIMB_COUNT',
-          'type'    => 'INT',
-          'targets' => [],
-          'default' => '2222',
-        ])));
-
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'CONFIG',
-          'type'    => 'JSON',
-          'targets' => [],
-          'default' => ['test' => 'something'],
-        ])));
-
-        $this->assertTrue(!is_null(Property::create([
-          'key'     => 'IS_TALL_PERSON',
-          'type'    => 'BOOL',
-          'targets' => [],
-          'default' => true,
-        ])));
+        Property::make('EYE_COLOUR', 'STRING', 'Unknown');
+        Property::make('LIMB_COUNT', 'INT', 2);
+        Property::make('CONFIG', 'JSON', ['username' => 'JohnDoe']);
+        Property::make('IS_WORKING', 'BOOL', true);
 
         $john = Person::first();
         $john->attachProperty('EYE_COLOUR', 'Blue');
         $john->attachProperty('LIMB_COUNT', 700);
         $john->attachProperty('CONFIG', ['bouncing' => 'ball', 'heavy' => 'egg']);
-        $john->attachProperty('IS_TALL_PERSON', true);
+        $john->attachProperty('IS_WORKING', false);
 
-        $this->assertTrue(is_int($john->properties()->firstKey('LIMB_COUNT')->value));
-        $this->assertTrue(is_string($john->properties()->firstKey('EYE_COLOUR')->value));
-        $this->assertTrue($john->properties()->firstKey('IS_TALL_PERSON')->value === true);
+        $this->assertTrue(is_int($john->property('LIMB_COUNT')));
+        $this->assertTrue(is_string($john->property('EYE_COLOUR')));
+        $this->assertTrue(is_bool($john->property('IS_WORKING')));
     }
 }
