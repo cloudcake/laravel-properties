@@ -84,8 +84,6 @@ $user->attachProperty('MAX_DOWNLOADS');
 ## Detaching a Property from Models
 
 ```php
-use App\User;
-
 // Attach the MAX_DOWNLOADS property with a custom value of 700.
 $user->detachProperty('MAX_DOWNLOADS');
 ```
@@ -93,13 +91,13 @@ $user->detachProperty('MAX_DOWNLOADS');
 ## Retrieving Properties attached to a model
 
 ```php
-$john = User::find(1337);
+$user = User::find(1337);
 
-$john->attachProperty('API_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
-$john->attachProperty('OTHER_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
-$john->attachProperty('MAX_DOWNLOADS', 123);
+$user->attachProperty('API_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
+$user->attachProperty('OTHER_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
+$user->attachProperty('MAX_DOWNLOADS', 123);
 
-$john->property('API_CONFIG');    // {"username":"foobar","password":"p455w0rd"}
-$john->property('OTHER_CONFIG');  // ['username' => 'foobar', 'password' => 'p455w0rd']
-$john->property('MAX_DOWNLOADS'); // 123
+$user->property('API_CONFIG');    // {"username":"foobar","password":"p455w0rd"}
+$user->property('OTHER_CONFIG');  // ['username' => 'foobar', 'password' => 'p455w0rd']
+$user->property('MAX_DOWNLOADS'); // 123
 ```
