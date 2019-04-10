@@ -54,7 +54,7 @@ trait HasProperties
      *
      * @param mixed $property
      *
-     * @return boolean
+     * @return bool
      */
     public function detachProperty($property)
     {
@@ -79,8 +79,8 @@ trait HasProperties
      * Returns the first association of the provided property name with
      * casted values.
      *
-     * @param string  $name
-     * @param boolean $toArray
+     * @param string $name
+     * @param bool   $toArray
      *
      * @return mixed
      */
