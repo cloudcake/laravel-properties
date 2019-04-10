@@ -33,6 +33,7 @@ Add `Properties\PropertiesServiceProvider::class` to the `providers` array in `c
 `php artisan migrate`
 
 # Setting Up
+
 The only requirement to start attaching properties to models is to add the `\Properties\HasProperties`  trait:
 
 ```php
@@ -44,97 +45,77 @@ class Person extends Model
     use HasProperties;
 }
 ```
+
 That's it. See the usage section for examples.
 
 # Usage
-The way Properties works, a `Property` is created with a `key`, `group`, `type`, `targets`, and `default` where:
 
-- `key` is a unique identifier for the property
-- `group` is a tag to group properties together (**optional**)
-- `type` is the data type of the value, see the Property Types section (**optional**)
-- `targets` is a tag to identify which models this property may be associated to (**optional**)
-- `default` is the default value that will be set on the associating model if no value has been set
-
-Once you have created at least one property, you can associate it to any other model with optional custom values, or if no values have been defined, the defaults will be assigned.
+Once you have created at least one property, you can associate it to any other model with optional custom values. If an association is made with missing fields, the defaults will be returned when retriving the associated property.
 
 ## Creating a Property
+
 Creating a property follows the same process as you would create any other model. In our example we'll assume we have a `Person` model, a `MAX_DOWNLOADS_ALLOWED` property and a `API_CONFIG` property:
 
 ```php
 use Properties\Models\Property;
 
-Property::create([
-   'key' => 'MAX_DOWNLOADS_ALLOWED',
-   'group' => null,
-   'type' => 'INTEGER',
-   'targets' => ['PERSON'],
-   'default' => '200'
-]);
+Property::make('MAX_DOWNLOADS_ALLOWED', 'INT', 200);
 
-Property::create([
-   'key' => 'API_CONFIG',
-   'group' => null,
-   'type' => 'JSON',
-   'targets' => ['PERSON'],
-   'default' => ['username' => null, 'password' => null]
+Property::make('API_CONFIG', 'JSON', [
+  'username' => null,
+  'password' => null
 ]);
-
 ```
 
-### Property Types
-By default, if a property `type` column is set to `null`, any values will be returned as a string, however some default types have been supplied out of the box:
-
-- `INT` or `INTEGER`: Will cast the value to an `integer`.
-- `BOOL` or `BOOLEAN`: Will cast the value to a `bool`.
-- `JSON`: Will cast a valid JSON value to `JSON`.
-- `SCHEMA`: Will cast the value to a special type of `JSON` format, see the Schema Property section.
-
 ## Attaching a Property to Models
-Once you've created your properties with default values, associating them to any model that contains the `HasProperties` attribute is as simple as calling:
+
+Once you've created your properties with default values, associating them to any model that contains the `HasProperties` attribute is as simple as calling `attachProperty` with the name of the property as the first parameter and the overriding values as a second parameter:
 
 ```php
-use App\Models\Person;
+use App\User;
 
-$person = Person::first();
+$user = User::first();
 
 // Attach the MAX_DOWNLOADS_ALLOWED property with a custom value of 700.
-$person->attachProperty('MAX_DOWNLOADS_ALLOWED', 700);
+$user->attachProperty('MAX_DOWNLOADS_ALLOWED', 700);
 
 // Attach the MAX_DOWNLOADS_ALLOWED property with the default Property value.
-$person->attachProperty('MAX_DOWNLOADS_ALLOWED');
+$user->attachProperty('MAX_DOWNLOADS_ALLOWED');
 ```
 
 ## Detaching a Property from Models
+
 Detaching properties is done in the same way regular Laravel detaching is done:
 
 ```php
-use App\Models\Person;
+use App\User;
 
-$person = Person::first();
-$person->properties()->detach('MAX_DOWNLOADS_ALLOWED');
+$property = Property::whereName('MAX_DOWNLOADS_ALLOWED')->first();
+
+$user = User::first();
+$user->properties()->detach($property);
 ```
 
 ## Retrieving Properties attached to a model
+
 Since the properties associating are a regular Laravel polymorphic relationship, you can call your eloquent queries as you usually would to retrieve properties:
 
 ```php
-$john = Person::find(1337);
+$john = User::find(1337);
 $john->attachProperty('API_CONFIG', ['username' => 'foobar', 'password' => 'p455w0rd']);
 $john->attachProperty('MAX_DOWNLOADS_ALLOWED', 123);
 
 $api = $john->properties()->find('API_CONFIG');
 
 print_r($api->value); // ['username' => 'foobar', 'password' => 'p455w0rd']
-print_r($api->default); // ['username' => null, 'password' => null]
 
 $max_downloads = $john->properties()->find('MAX_DOWNLOADS_ALLOWED');
 
 echo $max_downloads->value; // 123
-echo $max_downloads->default; // 200
-
 ```
 
 ## Retrieving Properties by Target
+
 If making use of the `targets` field, you may retrieve only properties that fit the `targets` criteria by appending the `targetting` scope to your queries:
 
 ```php
@@ -146,18 +127,18 @@ Property::targetting(['PERSON','ANIMALS','COMPUTERS'])->get();
 
 // Get properties on person model targeting 'PERSON'
 Person::find(1337)->properties()->targetting('PERSON')->get();
-
 ```
 
 ## Schema Property
+
 The `SCHEMA` type is a custom pre-configured data type that was created with the need to store application preferences in mind. An example might be a case where you need to store a users theme settings for your web application and you don't want to store several smaller properties for it. This type was configured in such a way that the blueprint could be used to construct a responsive frontend based on the type of values required.
 
 Think of this type as a property containing many sub-properties inside a JSON string. Each object inside the JSON string requires 4 fields:
 
-- `key`: The key for the specific object
-- `default`: The default value for the specific object
-- `type`: Your own custom type to assist the frontend in identifying what type of input to display
-- `label`: A human readable label to describe the object
+-   `key`: The key for the specific object
+-   `default`: The default value for the specific object
+-   `type`: Your own custom type to assist the frontend in identifying what type of input to display
+-   `label`: A human readable label to describe the object
 
 See a real world example of one of my own personal projects below:
 
@@ -198,6 +179,7 @@ See a real world example of one of my own personal projects below:
 ```
 
 ### Creating a Schema Property
+
 For this property type only, there's a method to create the property, this is to ensure the input contains all the necessary required fields in order to function correctly. Let's use the above example to create a schema:
 
 ```php
@@ -231,6 +213,7 @@ Property::schema('THEME', ['USER'], [
 ```
 
 ### Assigning a Schema Property to a model
+
 Assigning a schema property is slightly different to that of a regular property because for each object inside the default value we need to set a key with a value and for any missing keys we'll set the default value.
 
 ```php

@@ -21,8 +21,45 @@ class Propertyable extends MorphPivot
         return $value;
     }
 
+    /**
+     * Mutate the value based on the property type.
+     *
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setValueAttribute($value)
+    {
+        switch ($this->type) {
+            case 'INT':
+            case 'INTEGER':
+                $value = intval($value);
+                break;
+
+            case 'BOOL':
+            case 'BOOLEAN':
+                $vlaue = boolval($value);
+                break;
+
+            case 'JSON':
+            case 'OBJECT':
+            case 'ARRAY':
+                $value = !is_string($value) ? json_encode($value) : $value;
+                break;
+        }
+
+        $this->attributes['value'] =  $value;
+    }
+
+    /**
+     * Property relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function property()
     {
-        return $this->belongsTo(config('properties.model', \Properties\Models\Property::class));
+        $propertyModel = config('properties.model', \Properties\Models\Property::class);
+
+        return $this->belongsTo($propertyModel);
     }
 }

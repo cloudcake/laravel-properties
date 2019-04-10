@@ -2,8 +2,6 @@
 
 namespace Properties\Traits;
 
-use Closure;
-
 trait HasProperties
 {
     /**
@@ -26,7 +24,7 @@ trait HasProperties
      *
      * @return \Properties\Models\Property
      */
-    public function attachProperty($property, $value = null)
+    public function attachProperty($property, $value = [])
     {
         $class = config('properties.model', \Properties\Models\Property::class);
 
@@ -45,5 +43,27 @@ trait HasProperties
         $this->properties()->attach($property->id, ['value' => $value]);
 
         return $this;
+    }
+
+    /**
+     * Returns the first association of the provided property name with
+     * casted values.
+     *
+     * @param string  $name
+     * @param boolean $toArray
+     *
+     * @return mixed
+     */
+    public function property($name, $jsonToObject = true)
+    {
+        $property = $this->properties()->where('name', $name)->first();
+
+        $value = $property->value ?? null;
+
+        if ($value && $jsonToObject && $property->type == 'JSON') {
+            $value = json_decode($value);
+        }
+
+        return $value;
     }
 }

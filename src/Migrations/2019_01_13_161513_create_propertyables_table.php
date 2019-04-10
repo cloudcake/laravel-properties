@@ -18,7 +18,6 @@ class CreatePropertyablesTable extends Migration
             $table->bigInteger('propertyable_id');
             $table->string('propertyable_type');
             $table->longText('value')->nullable();
-            $table->timestamps();
         });
     }
 
