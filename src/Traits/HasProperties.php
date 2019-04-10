@@ -24,12 +24,16 @@ trait HasProperties
      *
      * @return \Properties\Models\Property
      */
-    public function attachProperty($property, $value = [])
+    public function attachProperty($property, $value = null)
     {
         $class = config('properties.model', \Properties\Models\Property::class);
 
         if (!($property instanceof $class)) {
-            $property = $class::find($property);
+            if (is_string($property)) {
+                $property = $class::where('name', $property)->first();
+            } else {
+                $property = $class::find($property);
+            }
         }
 
         if (!$property) {
@@ -49,8 +53,8 @@ trait HasProperties
      * Returns the first association of the provided property name with
      * casted values.
      *
-     * @param string $name
-     * @param bool   $toArray
+     * @param string  $name
+     * @param boolean $toArray
      *
      * @return mixed
      */
