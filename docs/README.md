@@ -84,7 +84,6 @@ $user->attachProperty('MAX_DOWNLOADS');
 ## Detaching a Property from Models
 
 ```php
-// Attach the MAX_DOWNLOADS property with a custom value of 700.
 $user->detachProperty('MAX_DOWNLOADS');
 ```
 
