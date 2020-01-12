@@ -1,5 +1,5 @@
 {
-  "name": "stephenlake/laravel-properties",
+  "name": "cloudcake/laravel-properties",
   "description": "Associate generic data to any other model without polluting your application model logic, for Laravel.",
   "type": "library",
   "license": "MIT",
